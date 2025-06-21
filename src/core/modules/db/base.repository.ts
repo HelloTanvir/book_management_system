@@ -2,7 +2,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { PaginationDto } from '../../types/pagination.dto';
+import { PaginationDto } from '@/core/types/pagination.dto';
 import {
   DeepPartial,
   EntityManager,
