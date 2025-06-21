@@ -40,4 +40,6 @@ export class PaginationDto {
     if (!this.page || !this.limit) return 0;
     return (this.page - 1) * this.limit;
   }
+
+  set skip(_: number) {}
 }

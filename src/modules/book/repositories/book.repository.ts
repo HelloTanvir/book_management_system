@@ -4,6 +4,7 @@ import { BaseRepository } from '@/core/modules/db/base.repository';
 import { BookEntity } from '@/modules/book/entities/book.entity';
 import { EntityManager, ILike } from 'typeorm';
 import { BookFilterQueryDto } from '../dto/filter-query.dto';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Injectable()
 export class BookRepository extends BaseRepository<BookEntity> {
@@ -11,7 +12,10 @@ export class BookRepository extends BaseRepository<BookEntity> {
     super(entityManager, BookEntity);
   }
 
-  async search(filter: BookFilterQueryDto): Promise<[BookEntity[], number]> {
+  async search(
+    filter: BookFilterQueryDto,
+    paginationDto: PaginationDto,
+  ): Promise<[BookEntity[], number]> {
     const { search, authorId } = filter;
 
     const options: Parameters<typeof this.find>[0] = {};
@@ -27,6 +31,6 @@ export class BookRepository extends BaseRepository<BookEntity> {
         : { author: { id: authorId } };
     }
 
-    return this.find(options, filter);
+    return this.find(options, paginationDto);
   }
 }

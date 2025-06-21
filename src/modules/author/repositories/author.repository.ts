@@ -4,6 +4,7 @@ import { AuthorEntity } from '@/modules/author/entities/author.entity';
 import { BaseRepository } from '@/core/modules/db/base.repository';
 import { EntityManager, ILike } from 'typeorm';
 import { AuthorFilterQueryDto } from '../dto/filter-query.dto';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Injectable()
 export class AuthorRepository extends BaseRepository<AuthorEntity> {
@@ -13,11 +14,12 @@ export class AuthorRepository extends BaseRepository<AuthorEntity> {
 
   async search(
     filter: AuthorFilterQueryDto,
+    paginationDto: PaginationDto,
   ): Promise<[AuthorEntity[], number]> {
     const { search } = filter;
 
     if (!search) {
-      return this.find({}, filter);
+      return this.find({}, paginationDto);
     }
 
     const like = `%${search}%`;
@@ -26,7 +28,7 @@ export class AuthorRepository extends BaseRepository<AuthorEntity> {
       {
         where: [{ firstName: ILike(like) }, { lastName: ILike(like) }],
       },
-      filter,
+      paginationDto,
     );
   }
 }

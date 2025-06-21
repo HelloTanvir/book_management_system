@@ -5,6 +5,7 @@ import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { AuthorFilterQueryDto } from '../dto/filter-query.dto';
 import { AuthorEntity } from '../entities/author.entity';
 import { PaginatedData } from '@/core/types/data.type';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Injectable()
 export class AuthorService {
@@ -16,13 +17,19 @@ export class AuthorService {
 
   async findAll(
     filter: AuthorFilterQueryDto,
+    paginationDto: PaginationDto,
   ): Promise<PaginatedData<AuthorEntity>> {
-    const [items, total] = await this.authorRepository.search(filter);
+    const [items, total] = await this.authorRepository.search(
+      filter,
+      paginationDto,
+    );
     const meta = {
       totalItems: total,
-      itemsPerPage: filter.limit ?? total,
-      totalPages: filter.limit ? Math.ceil(total / filter.limit) : 1,
-      currentPage: filter.page ?? 1,
+      itemsPerPage: paginationDto.limit ?? total,
+      totalPages: paginationDto.limit
+        ? Math.ceil(total / paginationDto.limit)
+        : 1,
+      currentPage: paginationDto.page ?? 1,
     };
     return { items, meta };
   }

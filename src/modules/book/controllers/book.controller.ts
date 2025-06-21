@@ -15,6 +15,7 @@ import { BookService } from '../services/book.service';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
 import { BookFilterQueryDto } from '../dto/filter-query.dto';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Controller('books')
 export class BookController {
@@ -28,8 +29,11 @@ export class BookController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(@Query() query: BookFilterQueryDto) {
-    return this.bookService.findAll(query);
+  findAll(
+    @Query() query: BookFilterQueryDto,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.bookService.findAll(query, paginationDto);
   }
 
   @Get(':id')

@@ -14,6 +14,7 @@ import { BookEntity } from '../entities/book.entity';
 import { PaginatedData } from '@/core/types/data.type';
 import { AuthorService } from '@/modules/author/services/author.service';
 import { AuthorEntity } from '@/modules/author/entities/author.entity';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Injectable()
 export class BookService {
@@ -38,13 +39,19 @@ export class BookService {
 
   async findAll(
     filter: BookFilterQueryDto,
+    paginationDto: PaginationDto,
   ): Promise<PaginatedData<BookEntity>> {
-    const [items, total] = await this.bookRepository.search(filter);
+    const [items, total] = await this.bookRepository.search(
+      filter,
+      paginationDto,
+    );
     const meta = {
       totalItems: total,
-      itemsPerPage: filter.limit ?? total,
-      totalPages: filter.limit ? Math.ceil(total / filter.limit) : 1,
-      currentPage: filter.page ?? 1,
+      itemsPerPage: paginationDto.limit ?? total,
+      totalPages: paginationDto.limit
+        ? Math.ceil(total / paginationDto.limit)
+        : 1,
+      currentPage: paginationDto.page ?? 1,
     };
     this.logger.log(`Found ${total} books`);
     return { items, meta };

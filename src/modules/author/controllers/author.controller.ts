@@ -15,6 +15,7 @@ import { AuthorService } from '../services/author.service';
 import { CreateAuthorDto } from '../dto/create-author.dto';
 import { UpdateAuthorDto } from '../dto/update-author.dto';
 import { AuthorFilterQueryDto } from '../dto/filter-query.dto';
+import { PaginationDto } from '@/core/types/pagination.dto';
 
 @Controller('authors')
 export class AuthorController {
@@ -28,8 +29,11 @@ export class AuthorController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  findAll(@Query() query: AuthorFilterQueryDto) {
-    return this.authorService.findAll(query);
+  findAll(
+    @Query() query: AuthorFilterQueryDto,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.authorService.findAll(query, paginationDto);
   }
 
   @Get(':id')
