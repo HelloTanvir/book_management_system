@@ -4,6 +4,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Request, Response } from 'express';
+import { ResponseTransformInterceptor } from '@/core/interceptors/response-transform.interceptor';
+import { HttpExceptionFilter } from '@/core/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,6 +35,9 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.useGlobalInterceptors(new ResponseTransformInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Book Management System')
