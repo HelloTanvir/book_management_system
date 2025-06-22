@@ -1,98 +1,182 @@
+# 📚 Book Management System
+
+A fully-typed, production-ready REST API for registering **authors** and their **books**. Built with [NestJS](https://nestjs.com/), [TypeORM](https://typeorm.io/) and SQLite.
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="https://nodejs.org/en"><img src="https://img.shields.io/badge/node-%3E=18.x-brightgreen" alt="node version"/></a>
+  <a href="https://yarnpkg.com"><img src="https://img.shields.io/badge/yarn-berry-blue" alt="yarn"/></a>
+  <img src="https://img.shields.io/badge/coverage-e2e%20&%20unit-informational"/>
+  <img src="https://img.shields.io/badge/license-MIT-lightgrey"/>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+---
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ Features
 
-## Description
+- CRUD endpoints for Authors & Books
+- One-to-Many relationship between authors and their books
+- Pagination, search & sorting out-of-the-box
+- Global response transformer & exception filter for consistent JSON output
+- Auto-generated Swagger (OpenAPI) docs available under `/api`
+- SQLite by default—easily switch to any SQL RDBMS supported by TypeORM
+- Repository pattern with transaction safety and bulk operations
+- Unit & e2e tests (Jest + Supertest)
+- Container-ready & 12-Factor compliant configuration
+- Adheres to **SOLID**, **DRY** & **KISS** principles
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 🛠 Tech Stack
 
-```bash
-$ yarn install
+| Category  | Library / Tool |
+|-----------|----------------|
+| Language  | TypeScript |
+| Framework | NestJS 10 |
+| ORM       | TypeORM |
+| Database  | SQLite (default) |
+| Validation| class-validator / class-transformer |
+| Testing   | Jest, Supertest |
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+  core/           # global filters, interceptors, shared types, database module
+  modules/
+    author/       # author feature (controller, service, repository, dto, entity)
+    book/         # book feature (controller, service, repository, dto, entity)
+  main.ts         # application bootstrap & Swagger setup
+test/             # e2e tests
+.env.example      # environment template
 ```
 
-## Compile and run the project
+Each **feature** lives in its own folder, promoting high cohesion and easy reusability.
+
+---
+
+## ⚡ Getting Started
+
+### Prerequisites
+
+1. **Node.js ≥ 18**  
+2. **Yarn**
+
+### Installation
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+git clone https://github.com/HelloTanvir/book_management_system.git
+cd book_management_system
+yarn install
 ```
 
-## Run tests
+### Configuration
+
+Create a `.env` file based on the template:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+```dotenv
+# .env
+PORT=5000
+DATABASE_PATH=./database.sqlite
+```
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Running Locally
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+# Development w/ hot-reload
+yarn start:dev
+
+# Production
+yarn build
+yarn start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Navigate to **http://localhost:5000/api** for the interactive Swagger UI.
 
-## Resources
+### Available Yarn Scripts
 
-Check out a few resources that may come in handy when working with NestJS:
+| Script            | Purpose                              |
+|-------------------|--------------------------------------|
+| `yarn start`      | Start in watch mode                  |
+| `yarn start:dev`  | Nest dev mode (hot reload)           |
+| `yarn start:prod` | Run compiled code                    |
+| `yarn build`      | Transpile TypeScript → JavaScript    |
+| `yarn test`       | Unit tests                           |
+| `yarn test:e2e`   | End-to-end tests                     |
+| `yarn test:cov`   | Coverage report                      |
+| `yarn lint`       | ESLint static analysis               |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 📖 API Reference
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+> The full, always-up-to-date specification is available at `/api`.
 
-## Stay in touch
+### Base URL
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+http://localhost:5000/api
+```
 
-## License
+### Endpoints
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### Authors
+
+| Method | Path          | Description                       |
+|--------|---------------|-----------------------------------|
+| GET    | `/authors`    | List (supports `search`, pagination) |
+| GET    | `/authors/:id`| Retrieve one                      |
+| POST   | `/authors`    | Create new                        |
+| PATCH  | `/authors/:id`| Partial update                    |
+| DELETE | `/authors/:id`| Remove                             |
+
+#### Books
+
+| Method | Path        | Description                                                         |
+|--------|-------------|---------------------------------------------------------------------|
+| GET    | `/books`    | List (filter by `authorId`, search in `title`/`isbn`, pagination)    |
+| GET    | `/books/:id`| Retrieve one with populated author                                  |
+| POST   | `/books`    | Create (`authorId` required)                                        |
+| PATCH  | `/books/:id`| Partial update                                                      |
+| DELETE | `/books/:id`| Remove                                                               |
+
+##### Pagination & Sorting Parameters
+
+| Param  | Default | Notes                            |
+|--------|---------|----------------------------------|
+| `page` | `1`     | Page number (1-based)            |
+| `limit`| `20`    | Items per page                   |
+| `sortBy`| field  | Any entity column                |
+| `order`| `ASC`   | `ASC` or `DESC`                  |
+| `search`| —      | Fuzzy match on multiple columns  |
+
+Example:
+
+```
+GET /books?search=typescript&limit=10&page=2&sortBy=title&order=DESC
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+yarn test
+
+# End-to-end
+yarn test:e2e
+```
+
+---
+
+Feel free to reach out if you have any questions!
+
+---
+
+Happy coding 🚀
