@@ -27,6 +27,9 @@ export class AuthorRepository extends BaseRepository<AuthorEntity> {
     return this.find(
       {
         where: [{ firstName: ILike(like) }, { lastName: ILike(like) }],
+        relations: {
+          books: true,
+        },
       },
       paginationDto,
     );

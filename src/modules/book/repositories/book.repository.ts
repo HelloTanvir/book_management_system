@@ -18,7 +18,11 @@ export class BookRepository extends BaseRepository<BookEntity> {
   ): Promise<[BookEntity[], number]> {
     const { search, authorId } = filter;
 
-    const options: Parameters<typeof this.find>[0] = {};
+    const options: Parameters<typeof this.find>[0] = {
+      relations: {
+        author: true,
+      },
+    };
 
     if (search) {
       const like = `%${search}%`;

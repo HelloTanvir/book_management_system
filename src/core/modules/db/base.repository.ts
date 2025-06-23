@@ -119,7 +119,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> {
 
   async create(data: DeepPartial<T>): Promise<T> {
     try {
-      const entity = new this.entity(data);
+      const entity = this.entityManager.create(this.entity, data);
       return await this.entityManager.save(entity);
     } catch (error) {
       this.handleClientError('create', error);
@@ -145,7 +145,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> {
     partialEntity: QueryDeepPartialEntity<T>,
   ): Promise<T | null> {
     try {
-      const entity = await this.findOne(criteria);
+      const entity = await this.findOne({ where: criteria });
 
       if (!entity) {
         return null;
@@ -196,7 +196,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> {
 
   async delete(criteria: FindOptionsWhere<T>): Promise<T | null> {
     try {
-      const entity = await this.findOne(criteria);
+      const entity = await this.findOne({ where: criteria });
       if (!entity) {
         return null;
       }
